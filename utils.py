@@ -1,10 +1,8 @@
 import csv
 import os
-import progressbar
 import settings as s
 import spacy
 
-from progressbar import ProgressBar, Bar, Percentage
 from torchtext import data
 
 
@@ -71,9 +69,6 @@ def dir_to_csv(csv_fname, dir_path):
         csv_fname = os.path.join(data_dir, csv_fname)
 
         print("Creating ", csv_fname, "...")
-        bar = ProgressBar(maxval=len(files),
-                          widgets=[Bar('=', '[', ']'), ' ', Percentage()])
-        bar.start()
         i = 0
         with open(csv_fname, "w+") as file_csv:
             writer = csv.writer(file_csv,
@@ -83,8 +78,6 @@ def dir_to_csv(csv_fname, dir_path):
                 with open(os.path.join(dir_path, file[0]), "r") as f:
                     writer.writerow([f.read(), file[1]])
                     i += 1
-                    bar.update(i)
-        bar.finish()
     else:
         print("Directory already exists, skipping creation...")
 
