@@ -55,18 +55,16 @@ def tokenize(text):
     return [tok.text for tok in s.SPACY_EN.tokenizer(text)]
 
 
-def dir_to_csv(csv_fname, dir_path):
-    """Creates a .csv from a directory of records."""
+def dir_to_csv(csv_fname, dir_paths):
+    """Creates a .csv from directories of records."""
+    pos_dirs = [os.path.join(dir, s.POS_DIR) for _dir in dir_paths]
+    neg_dirs = [os.path.join(dir, s.NEG_DIR) for _dir in dir_paths]
 
-    pos_dir = os.path.join(dir_path, s.POS_DIR)
-    neg_dir = os.path.join(dir_path, s.NEG_DIR)
+    files = [file for _dir in pos_dirs for file in os.listdir(_dir)]
+    files.extend([file for _dir in neg_dirs for file in os.listdir(_dir)])
+
     data_dir = os.path.join(os.getcwd(), s.DATA_DIR)
 
-    files = [(os.path.join(pos_dir, file), 1)
-             for file in os.listdir(pos_dir)]
-    # add negative examples to our files list
-    files.extend([(os.path.join(neg_dir, file), 0)
-                  for file in os.listdir(neg_dir)])
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
         csv_fname = os.path.join(data_dir, csv_fname)
@@ -93,7 +91,10 @@ def binary_accuracy(preds, y):
     acc = correct.sum() / len(correct)
     return acc
 
+
 def epoch_time(start_time, end_time):
+    """Calculates the elapsed minutes and seconds given a start and end time."""
+
     elapsed_time = end_time - start_time
     elapsed_mins = int(elapsed_time / 60)
     elapsed_secs = int(elapsed_time - (elapsed_mins * 60))
