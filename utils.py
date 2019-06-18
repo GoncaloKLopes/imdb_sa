@@ -2,14 +2,16 @@ import csv
 import os
 import settings as s
 import spacy
+import torch
 
 from torchtext import data
 
 
 class ModelConfig:
     """Encapsulates model configuration."""
-    def __init__(self, d_hidden, vocab_size, d_embed,
+    def __init__(self, id, d_hidden, vocab_size, d_embed,
                  batch_size, n_layers, nonlin, dropout, bidir):
+        self.id = id
         self.d_hidden = d_hidden
         self.vocab_size = vocab_size
         self.d_embed = d_embed
@@ -33,7 +35,8 @@ class ModelConfig:
 
 class TrainConfig:
     """Encapsulates train configuration."""
-    def __init__(self, criterion, optimizer, epochs, o_kwargs={}):
+    def __init__(self, id, criterion, optimizer, epochs, o_kwargs={}):
+        self.id = id
         self.criterion = criterion
         self.optimizer = optimizer
         self.o_kwargs = o_kwargs
@@ -89,3 +92,9 @@ def binary_accuracy(preds, y):
     correct = (rounded_preds == y).float()
     acc = correct.sum() / len(correct)
     return acc
+
+def epoch_time(start_time, end_time):
+    elapsed_time = end_time - start_time
+    elapsed_mins = int(elapsed_time / 60)
+    elapsed_secs = int(elapsed_time - (elapsed_mins * 60))
+    return elapsed_mins, elapsed_secs

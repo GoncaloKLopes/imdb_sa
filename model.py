@@ -34,5 +34,5 @@ class BinarySARNN(nn.Module):
         rnn_out, self.hidden = self.rnn(embeddings)
         # shape -> [batch_size, hidden_dim] TODO CHECK THIS
 
-        logits = self.hidden_to_label(self.hidden)
+        logits = self.hidden_to_label(self.hidden[-1])
         return logits

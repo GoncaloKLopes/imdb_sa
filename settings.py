@@ -5,7 +5,8 @@ from configs import *
 
 SPACY_EN = spacy.load("en")
 
-DATASET_PATH = "/home/goncalo/datasets/aclImdb"
+DATASET_PATH = "/home/goncalo/data/aclImdb"
+MODELS_PATH = "/home/jupyter/models/aclImdb"
 TRAIN_DIR = "train"
 TEST_DIR = "test"
 POS_DIR = "pos"
@@ -21,6 +22,6 @@ EMBEDDINGS_FILE = "vectors_aclImdb.txt"
 VOCAB_FILE = "imdb_vocab.pickle"
 
 # Which RNN configuration to use
-MODEL_CONFIG = RNN_CONFIG1
+MODEL_CONFIG = RNN_CONFIG3
 # Which training configuration to use
-TRAIN_CONFIG = TRAIN_CONFIG1
+TRAIN_CONFIG = TRAIN_CONFIG3
