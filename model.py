@@ -12,15 +12,17 @@ class BinarySARNN(nn.Module):
         self.batch_size = config.batch_size
         self.num_labels = 2
         self.num_layers = config.n_layers
-        if config.nonlin not in ("tanh", "relu"):
-            raise ValueError("Invalid activation function", config.nonlin,
-                             ". Expected \"tanh\" or \"relu\".")
-        else:
-            self.nonlin = config.nonlin
+
         self.dropout = config.dropout
         self.bidir = config.bidir
         self.embed = nn.Embedding(self.vocab_size, self.embed_dim)
         if config.arch == "RNN":
+            if config.nonlin not in ("tanh", "relu"):
+                raise ValueError("Invalid activation function", config.nonlin,
+                                 ". Expected \"tanh\" or \"relu\".")
+            else:
+                self.nonlin = config.nonlin
+
             self.rnn = nn.RNN(input_size=self.embed_dim,
                               hidden_size=self.hidden_dim,
                               num_layers=self.num_layers,
