@@ -29,7 +29,7 @@ class BinarySARNN(nn.Module):
                               dropout=self.dropout,
                               nonlinearity=self.nonlin,
                               bidirectional=self.bidir)
-        else if config.arch == "LSTM":
+        elif config.arch == "LSTM":
             self.rnn = nn.LSTM(input_size=self.embed_dim,
                                hidden_size=self.hidden_dim,
                                num_layers=self.num_layers,
