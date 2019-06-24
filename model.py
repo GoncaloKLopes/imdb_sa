@@ -34,7 +34,6 @@ class BinarySARNN(nn.Module):
                                hidden_size=self.hidden_dim,
                                num_layers=self.num_layers,
                                dropout=self.dropout,
-                               nonlinearity=self.nonlin,
                                bidirectional=self.bidir)
         else:
             raise ValueError("Invalid architecture string" + config.arch)
