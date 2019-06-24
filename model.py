@@ -20,9 +20,22 @@ class BinarySARNN(nn.Module):
         self.dropout = config.dropout
         self.bidir = config.bidir
         self.embed = nn.Embedding(self.vocab_size, self.embed_dim)
-        self.rnn = nn.RNN(input_size=self.embed_dim, hidden_size=self.hidden_dim,
-                          num_layers=self.num_layers, dropout=self.dropout,
-                          nonlinearity=self.nonlin, bidirectional=self.bidir)
+        if config.arch == "RNN":
+            self.rnn = nn.RNN(input_size=self.embed_dim,
+                              hidden_size=self.hidden_dim,
+                              num_layers=self.num_layers,
+                              dropout=self.dropout,
+                              nonlinearity=self.nonlin,
+                              bidirectional=self.bidir)
+        else if config.arch == "LSTM":
+            self.rnn = nn.LSTM(input_size=self.embed_dim,
+                               hidden_size=self.hidden_dim,
+                               num_layers=self.num_layers,
+                               dropout=self.dropout,
+                               nonlinearity=self.nonlin,
+                               bidirectional=self.bidir)
+        else:
+            raise ValueError("Invalid architecture string" + config.arch)
         self.hidden_to_label = nn.Linear(self.hidden_dim, self.num_labels)
 
     def forward(self, batch):

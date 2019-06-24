@@ -10,7 +10,8 @@ from torchtext import data
 class ModelConfig:
     """Encapsulates model configuration."""
     def __init__(self, id, d_hidden, vocab_size, d_embed,
-                 batch_size, n_layers, nonlin, dropout, bidir):
+                 batch_size, n_layers, nonlin, dropout, bidir,
+                 arch):
         self.id = id
         self.d_hidden = d_hidden
         self.vocab_size = vocab_size
@@ -20,6 +21,7 @@ class ModelConfig:
         self.nonlin = nonlin
         self.dropout = dropout
         self.bidir = bidir
+        self.arch = arch
 
     def __str__(self):
         return "Model Config\n" + 12 * ("=") + "\n" +\
@@ -30,7 +32,8 @@ class ModelConfig:
                "n_layers = " + str(self.n_layers) + "\n" +\
                "nonlin = " + str(self.nonlin) + "\n" +\
                "dropout = " + str(self.dropout) + "\n" +\
-               "bidir = " + str(self.bidir)
+               "bidir = " + str(self.bidir) + "\n" +\
+               "arch = " + self.arch
 
 
 class TrainConfig:
