@@ -45,7 +45,7 @@ class BinarySARNN(nn.Module):
         embeddings = self.embed(batch)
         # shape -> [batch_size, sentence_len, embed_dim] TODO CHECK THIS
 
-        _, self.hidden = self.rnn(embeddings)
+        rnn_out, _ = self.rnn(embeddings)
         # shape -> [batch_size, hidden_dim] TODO CHECK THIS
 
-        return self.hidden_to_label(self.hidden[-1])
+        return self.hidden_to_label(rnn_out[-1])
