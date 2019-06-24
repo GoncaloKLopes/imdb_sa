@@ -10,8 +10,8 @@ from torchtext import data
 class ModelConfig:
     """Encapsulates model configuration."""
     def __init__(self, id, d_hidden, vocab_size, d_embed,
-                 batch_size, n_layers, nonlin="", dropout, bidir,
-                 arch):
+                 batch_size, n_layers, dropout, bidir,
+                 arch, nonlin=""):
         self.id = id
         self.d_hidden = d_hidden
         self.vocab_size = vocab_size
