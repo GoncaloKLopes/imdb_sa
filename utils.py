@@ -57,11 +57,11 @@ def tokenize(text):
 
 def dir_to_csv(csv_fname, dir_paths):
     """Creates a .csv from directories of records."""
-    pos_dirs = [os.path.join(dir, s.POS_DIR) for _dir in dir_paths]
-    neg_dirs = [os.path.join(dir, s.NEG_DIR) for _dir in dir_paths]
+    pos_dirs = [os.path.join(_dir, s.POS_DIR) for _dir in dir_paths]
+    neg_dirs = [os.path.join(_dir, s.NEG_DIR) for _dir in dir_paths]
 
-    files = [file for _dir in pos_dirs for file in os.listdir(_dir)]
-    files.extend([file for _dir in neg_dirs for file in os.listdir(_dir)])
+    files = [(os.path.join(_dir, _file), 1) for _dir in pos_dirs for _file in os.listdir(_dir)]
+    files.extend([(os.path.join(_dir, _file), 0) for _dir in neg_dirs for _file in os.listdir(_dir)])
 
     data_dir = os.path.join(os.getcwd(), s.DATA_DIR)
 
@@ -75,9 +75,9 @@ def dir_to_csv(csv_fname, dir_paths):
             writer = csv.writer(file_csv,
                                 delimiter=" ",
                                 quoting=csv.QUOTE_NONNUMERIC)
-            for file in files:
-                with open(os.path.join(dir_path, file[0]), "r") as f:
-                    writer.writerow([f.read(), file[1]])
+            for _file in files:
+                with open(_file[0], "r") as f:
+                    writer.writerow([f.read(), _file[1]])
                     i += 1
     else:
         print("Directory already exists, skipping creation...")

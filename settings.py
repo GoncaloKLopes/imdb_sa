@@ -12,9 +12,7 @@ TEST_DIR = "test"
 POS_DIR = "pos"
 NEG_DIR = "neg"
 
-TRAIN_CSV = "train.csv"
-TEST_CSV = "test.csv"
-VAL_CSV = "val.csv"
+CSV = "reviews.csv"
 
 DATA_DIR = "data"
 
