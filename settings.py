@@ -19,6 +19,8 @@ DATA_DIR = "data"
 EMBEDDINGS_FILE = "vectors_aclImdb.txt"
 VOCAB_FILE = "imdb_vocab.pickle"
 
+D_EMBEDDING = 300
+
 # Which RNN configuration to use
 MODEL_CONFIG = RNN_CONFIG3
 # Which training configuration to use

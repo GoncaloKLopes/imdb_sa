@@ -16,6 +16,7 @@ class BinarySARNN(nn.Module):
         self.dropout = config.dropout
         self.bidir = config.bidir
         self.embed = nn.Embedding(self.vocab_size, self.embed_dim)
+        self.arch = config.arch
         if config.arch == "RNN":
             if config.nonlin not in ("tanh", "relu"):
                 raise ValueError("Invalid activation function", config.nonlin,
@@ -37,15 +38,25 @@ class BinarySARNN(nn.Module):
                                bidirectional=self.bidir)
         else:
             raise ValueError("Invalid architecture string" + config.arch)
-        self.hidden_to_label = nn.Linear(self.hidden_dim, self.num_labels)
+        self.hidden_to_label = nn.Linear(self.hidden_dim * (1 + self.bidir), self.num_labels)
 
-    def forward(self, batch):
+    def forward(self, batch, text_lengths):
         # shape -> [batch_size, sentence_len] TODO CHECK THIS
 
         embeddings = self.embed(batch)
         # shape -> [batch_size, sentence_len, embed_dim] TODO CHECK THIS
-
-        rnn_out, _ = self.rnn(embeddings)
+        packed_embeddings = nn.utils.rnn.pack_padded_sequence(embeddings, text_lengths)
+        if self.arch == "RNN":
+            packed_rnn_out, hidden = self.rnn(packed_embeddings)
+        elif self.arch == "LSTM":
+            packed_rnn_out, (hidden, cell) = self.rnn(packed_embeddings)
         # shape -> [batch_size, hidden_dim] TODO CHECK THIS
-
-        return self.hidden_to_label(rnn_out[-1])
+        if self.bidir:
+            hidden = torch.cat((hidden[-2, : :], hidden[-1, :, :]), dim=1).squeeze(0)
+        
+        else: 
+            if self.num_layers > 1:
+                hidden = hidden[-1]
+            else:
+                hidden = hidden.squeeze(0)
+        return self.hidden_to_label(hidden)

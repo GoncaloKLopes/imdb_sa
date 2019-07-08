@@ -86,11 +86,12 @@ def dir_to_csv(csv_fname, dir_paths):
         print("Directory already exists, skipping creation...")
 
 
-def binary_accuracy(preds, y):
+def binary_accuracy(preds, y, verbose=False):
     """Returns accuracy for a batch of predictions."""
 
-    rounded_preds = torch.round(torch.sigmoid(preds))
-    correct = (rounded_preds == y).float()
+    if verbose:
+        print(str(preds) + " vs " + str(y))
+    correct = (preds == y).float()
     acc = correct.sum() / len(correct)
     return acc
 
